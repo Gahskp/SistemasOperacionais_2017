@@ -3,16 +3,16 @@
 #include <math.h>
 #define TAM 20000
 
-int vetor[TAM], numero, linha = 2;
+unsigned long vetor[TAM];
+int  numero, linha = 2;
 
 double piramide(int n);
-double probabilidade(int caminhos);
+double probabilidade(unsigned long caminhos);
 
 int main()
 {
-	printf("%e", pow(2,1000));
 	scanf("%d", &numero);
-	printf("%.2f", piramide(numero));	
+	printf("%.2lf", piramide(numero));	
 }
 
 double piramide(int n)
@@ -36,6 +36,7 @@ double piramide(int n)
 		{
 			vetor[TAM-1] = vetor[TAM-2] * 2;
 			vetor[TAM-2] = 0;
+			
 		}
 		linha++;
 		first--;
@@ -44,12 +45,15 @@ double piramide(int n)
 	return probabilidade(vetor[TAM-1]);
 }
 
-double probabilidade(int caminhos)
+double probabilidade(unsigned long caminhos)
 {
 	double resultado;
-	numero -= 1; 
-	resultado = caminhos / pow(2, numero);
+	double n = pow(2, (numero-1));
+	printf("\ncaminhos: %lu\n", caminhos);
+	printf("\npotencia: %f\n", n);
+	resultado = caminhos/n;
 	resultado *= 100;
+	printf("\nresultado: %.2f\n", resultado);
 	return resultado;
 }
 
