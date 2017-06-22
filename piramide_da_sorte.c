@@ -12,13 +12,12 @@ double probabilidade(unsigned long caminhos);
 int main()
 {
 	scanf("%d", &numero);
-	printf("%.2lf", piramide(numero));	
+	printf("%.2f", piramide(numero));	
 }
 
 double piramide(int n)
 {
 	int i, first = TAM - 2;
-	
 	vetor[first] = 1;
 	
 	while(linha <= n)
@@ -36,24 +35,29 @@ double piramide(int n)
 		{
 			vetor[TAM-1] = vetor[TAM-2] * 2;
 			vetor[TAM-2] = 0;
-			
 		}
 		linha++;
 		first--;
 		
 	}
+	printf("\ncaminhos: %d\n", vetor[TAM-1]);
 	return probabilidade(vetor[TAM-1]);
 }
-
+  
 double probabilidade(unsigned long caminhos)
 {
 	double resultado;
-	double n = pow(2, (numero-1));
-	printf("\ncaminhos: %lu\n", caminhos);
-	printf("\npotencia: %f\n", n);
-	resultado = caminhos/n;
+	int i;
+	//double n = pow(0.5, (numero-1));
+	resultado = caminhos/2;
+	//printf("\ncaminhos: %d\n", caminhos);
+	for(i=0; i<numero-2;i++)
+	{
+		resultado = resultado/2;
+	}
+	//resultado = caminhos*n;
 	resultado *= 100;
-	printf("\nresultado: %.2f\n", resultado);
+	//printf("\nresultado: %.2lf\n", resultado);
 	return resultado;
 }
 
