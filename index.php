@@ -32,16 +32,11 @@
 	  	//Email response
 	  	echo "<script>alert('E-mail enviado com sucesso! Agradeçemos pelo contato');</script>";
 	}
-
 	?>
-
-
-
 	<!-- BOOTSTRAP -->
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="libs/lightslider/css/lightslider.css">
-
 	<title>Master Alimentos</title>
 	<!-- ÍCONES -->
 	<link rel="apple-touch-icon" sizes="57x57" href="./imgs/favicon/apple-icon-57x57.png">
@@ -75,7 +70,6 @@
 				</button>
 				<a class="navbar-brand" href="#inicio">Master Alimentos</a>
 			</div>
-
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -84,9 +78,10 @@
 					<!--<li><a href="inscricao.php">Inscrições</a></li>-->
 					<li><a href="sobre.php">Sobre</a></li>
 					<li><a href="#rodape">Contato</a></li>
-					<!--<li><a href="inscricao.php">Processo seletivo 2017</a></li> -->
+					<li><a href="inscricao.php">Processo seletivo 2017</a></li>
 				</ul>
-				<a type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#myModal">LOGIN</a>
+				<a type="button" class="btn btn-danger pull-right" data-toggle="modal" data-target="#myModal" style="color: #fff;
+			    background-color: #d9534f;">LOGIN</a>
 			</div>
 		</div>
 	</nav>
@@ -133,15 +128,11 @@
 								</div>
 							</div>
 						</li>
-						<!--<li>
-							<div class="col-md-12 text-center">
-								<img class="img-responsive img-rounded" src="img/bee-master.png" alt="">
-							</div>
-						</li> -->
+						
 						<li>
 							<div class="col-md-12 text-center">
-								<img class="img-responsive img-rounded"
-								 src="img/equipe2017.jpg" alt="">
+								<img class="img-responsive img-rounded" 
+								 src="img/equipe2017.png" alt="">
 							</div>
 						</li>
 					</ul>
@@ -195,11 +186,7 @@
 			</div>
 		</div>
 	</section>
-
 	<!-- AQUI TERMINA O BANNER -->
-
-
-
 	<!-- AQUI COMEÇA O MODAL DE LOGIN-->
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -287,9 +274,7 @@
 				<div class="col-md-12 title-projeto">
 					<h4 class="">PROJETOS</h4>
 					<ul id="slider-portifolio">
-						<?php
-							$bd->listaPortifolioPaginaPrincipal();
-						?>
+						<? $bd->listaPortifolioPaginaPrincipal(); ?>
 					</ul>
 				</div>
 
@@ -298,8 +283,6 @@
 	</section>
 	<!-- AQUI TERMINA PORTIFOLIO -->
 	<!-- AQUI COMEÇA EDITAIS -->
-
-
 	<section id="edital">
 		<div class="container" >
 			<div class="row">
@@ -312,7 +295,6 @@
 					<!--<div class="text-right">
 						<a href="#" data-toggle="modal" data-target="#modalEditais"> Veja mais editais </a>
 					</div>-->
-
 				</div>
 				<div class="col-md-6 title-edital">
 					<div class="fb-page" data-href="https://www.facebook.com/MasterAlimentosJr/" data-tabs="timeline" data-width="500" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/MasterAlimentosJr/"><a href="https://www.facebook.com/MasterAlimentosJr/">Master Alimentos</a></blockquote></div></div>
@@ -321,9 +303,6 @@
 		</div>
 	</section>
 	<!-- AQUI TERMINA EDITAIS -->
-
-
-
 </body>
 <!-- AQUI COMEÇA O RODAPE -->
 <footer>
@@ -379,10 +358,8 @@
 			</div>
 		</div>
 	</section>
-
 </footer>
 <!-- AQUI TERMINA O RODAPE -->
-
 <!-- JAVA SCRIPT -->
 <!-- GOOGLE MAPS API -->
 <script src="http://maps.googleapis.com/maps/api/js"></script>
