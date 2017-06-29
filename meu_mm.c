@@ -33,7 +33,8 @@ int main()
   meu_aloca(60);
   meu_aloca(80);
   meu_aloca(100);*/
-  meu_desaloca(a1);
+  //meu_desaloca(a4);
+  //meu_desaloca(a2);
   mostra_mem();
 }
 
@@ -96,44 +97,32 @@ void *meu_aloca(int size)
 void meu_desaloca(void * ponteiro)
 {
   struct hole *atual, *anterior, *proximo;
-  atual = ponteiro;
+  atual = ponteiro - sizeof(struct hole);
   atual -> tam *= (-1);
   anterior = atual -> ante;
   proximo  = atual -> prox;
-  printf("\n******%d\n", atual->tam);
   if(anterior != NULL && anterior -> tam > 0){
     anterior -> prox = proximo;
     anterior -> tam += atual -> tam + sizeof(struct hole);
+    atual -> ante = NULL;
+    atual -> prox = NULL;
+    if(anterior -> prox != NULL)
+    {
+      proximo -> ante = anterior;
+    }
   } else
   {
     if(proximo != NULL && proximo -> tam > 0)
     {
-      proximo -> ante = anterior;
-      proximo -> tam += atual -> tam + sizeof(struct hole);
+      atual -> prox = proximo -> prox;
+      atual -> tam += proximo -> tam + sizeof(struct hole);
+      proximo -> ante = NULL;
+      proximo -> prox = NULL;
+      if(atual->prox != NULL)
+      {
+        atual -> prox -> ante = atual;
+      }
     }
   }
   proximo  = atual -> prox;
-
-
-
-	/*struct hole *atual, *anterior, *proximo;
-	atual = header;
-	while(atual != NULL)
-	{
-		if((atual + sizeof(struct hole)) == ponteiro)
-		{
-			anterior = atual -> ante;
-			anterior -> prox = NULL;
-			if((atual -> prox) != NULL)
-			{
-				proximo = atual -> prox;
-				anterior -> prox = proximo;
-				proximo -> ante = anterior;
-			}
-			atual -> tam = atual -> tam *(-1);
-			anterior -> tam = anterior -> tam + atual -> tam + sizeof(struct hole);
-			return ;
-		}
-		atual = atual -> prox;
-	}*/
 }
