@@ -8,7 +8,7 @@ struct hole{
 };
 
 struct hole *header;
-int minha_memoria = 624;
+int minha_memoria = 1024;
 
 void inicializa_mem(int mem);
 void * meu_aloca(int size);
@@ -86,6 +86,7 @@ void *meu_aloca(int size)
 	atual = header;
 	while(atual != NULL)
 	{
+    //printf("%d\n", atual->tam );
 		if(atual -> tam > size + sizeof(struct hole))
     {
 			aux = atual;
@@ -97,6 +98,7 @@ void *meu_aloca(int size)
 			atual -> prox = anterior -> prox;
 			anterior -> prox = atual;
 			atual -> tam = (-1)*size;
+      //printf("*****%d\n", atual->tam);
 			if(atual -> prox != NULL)
 			{
 				atual -> prox -> ante = atual;
@@ -180,7 +182,7 @@ void * meu_aloca_best(int size)
 	atual = menor = header;
 	while(atual != NULL)
 	{
-		if((atual -> tam < menor -> tam) && (atual -> tam > size + sizeof(struct hole)))
+		if(atual -> tam < menor -> tam && atual -> tam > size + sizeof(struct hole) && atual -> tam > 0)
     {
       menor = atual;
 		}
