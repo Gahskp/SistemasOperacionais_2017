@@ -8,35 +8,51 @@ struct hole{
 };
 
 struct hole *header;
-int minha_memoria = 1024;
+int minha_memoria = 624;
 
 void inicializa_mem(int mem);
 void * meu_aloca(int size);
-int merge(struct hole * anterior, struct hole * posterior);
+void * meu_aloca_worst(int size);
+void * meu_aloca_best(int size);
 void meu_desaloca(void * ponteiro);
 void mostra_mem();
 
 int main()
 {
-  int *a1, *a2, *a3, *a4;
+  int *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8, *a9,*a10, *a11, *a12, *a13;
 	inicializa_mem(minha_memoria);
-  a1 = meu_aloca(35);
-  //printf("%d\n", a1);
-  a2 = meu_aloca(40);
-  //printf("%d\n", a2);
-  a3 = meu_aloca(20);
-  //printf("%d\n", a3);
-  a4 = meu_aloca(30);
-  //printf("%d\n", a4);
-  /*meu_aloca(25);
-  meu_aloca(40);
-  meu_aloca(60);
-  meu_aloca(80);
-  meu_aloca(100);*/
-  //meu_desaloca(a4);
-  //meu_desaloca(a2);
+  a1  =  meu_aloca_best(10);
+  a2  =  meu_aloca_best(5);
+  a3  =  meu_aloca_best(20);
+  a4  =  meu_aloca_best(30);
+  a5  =  meu_aloca_best(15);
+  a6  =  meu_aloca_best(40);
+  a7  =  meu_aloca_best(60);
+  a8  =  meu_aloca_best(80);
+  a9  =  meu_aloca_best(100);
+  printf("** Primeira Alocação **\n");
+  mostra_mem();
+  meu_desaloca( a2 );
+  meu_desaloca( a4 );
+  meu_desaloca( a5 );
+  meu_desaloca( a7 );
+  meu_desaloca( a9 );
+  printf("** Segunda Alocação **\n");
+  mostra_mem();
+  a10 =  meu_aloca_best(3);
+  printf("** Terceira Alocação **\n");
+  mostra_mem();
+  a11 =  meu_aloca_best(20);
+  printf("** Quarta Alocação **\n");
+  mostra_mem();
+  a12 =  meu_aloca_best(12);
+  printf("** Quinta Alocação **\n");
+  mostra_mem();
+  a13 =  meu_aloca_best(40);
+  printf("** Sextou Alocação **\n");
   mostra_mem();
 }
+
 
 void mostra_mem(){
   struct hole *atual;
@@ -70,7 +86,6 @@ void *meu_aloca(int size)
 	atual = header;
 	while(atual != NULL)
 	{
-    //printf("%d\n", atual->tam );
 		if(atual -> tam > size + sizeof(struct hole))
     {
 			aux = atual;
@@ -82,7 +97,6 @@ void *meu_aloca(int size)
 			atual -> prox = anterior -> prox;
 			anterior -> prox = atual;
 			atual -> tam = (-1)*size;
-      //printf("*****%d\n", atual->tam);
 			if(atual -> prox != NULL)
 			{
 				atual -> prox -> ante = atual;
@@ -125,4 +139,68 @@ void meu_desaloca(void * ponteiro)
     }
   }
   proximo  = atual -> prox;
+}
+
+void * meu_aloca_worst(int size)
+{
+	void *aux;
+	struct hole *atual, *anterior, *maior;
+	atual = maior = header;
+	while(atual != NULL)
+	{
+		if(atual -> tam > maior -> tam)
+    {
+      maior = atual;
+		}
+		atual = atual -> prox;
+	}
+  if(maior -> tam > size + sizeof(struct hole))
+  {
+    aux = maior;
+    aux = aux + maior -> tam - size;
+    maior -> tam -= size + sizeof(struct hole);
+    anterior = maior;
+    maior = aux;
+    maior -> ante = anterior;
+    maior -> prox = anterior -> prox;
+    anterior -> prox = maior;
+    maior -> tam = (-1)*size;
+    if(maior -> prox != NULL)
+    {
+      maior -> prox -> ante = maior;
+    }
+    return (aux + sizeof(struct hole));
+  }
+}
+
+void * meu_aloca_best(int size)
+{
+  void *aux;
+	struct hole *atual, *anterior, *menor;
+	atual = menor = header;
+	while(atual != NULL)
+	{
+		if((atual -> tam < menor -> tam) && (atual -> tam > size + sizeof(struct hole)))
+    {
+      menor = atual;
+		}
+		atual = atual -> prox;
+	}
+  if(menor -> tam > size + sizeof(struct hole))
+  {
+    aux = menor;
+    aux = aux + menor -> tam - size;
+    menor -> tam -= size + sizeof(struct hole);
+    anterior = menor;
+    menor = aux;
+    menor -> ante = anterior;
+    menor -> prox = anterior -> prox;
+    anterior -> prox = menor;
+    menor -> tam = (-1)*size;
+    if(menor -> prox != NULL)
+    {
+      menor -> prox -> ante = menor;
+    }
+    return (aux + sizeof(struct hole));
+  }
 }
