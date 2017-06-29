@@ -7,13 +7,14 @@ struct hole{
     struct hole *ante;
 };
 
-struct hole *header;
+struct hole *header, *posicaoNext;
 int minha_memoria = 1024;
 
 void inicializa_mem(int mem);
 void * meu_aloca(int size);
 void * meu_aloca_worst(int size);
 void * meu_aloca_best(int size);
+void * meu_aloca_next(int size);
 void meu_desaloca(void * ponteiro);
 void mostra_mem();
 
@@ -21,37 +22,39 @@ int main()
 {
   int *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8, *a9,*a10, *a11, *a12, *a13;
 	inicializa_mem(minha_memoria);
-  a1  =  meu_aloca_best(10);
-  a2  =  meu_aloca_best(5);
-  a3  =  meu_aloca_best(20);
-  a4  =  meu_aloca_best(30);
-  a5  =  meu_aloca_best(15);
-  a6  =  meu_aloca_best(40);
-  a7  =  meu_aloca_best(60);
-  a8  =  meu_aloca_best(80);
-  a9  =  meu_aloca_best(100);
+  a1  =  meu_aloca_next(10);
+  a2  =  meu_aloca_next(5);
+  a3  =  meu_aloca_next(20);
+  //a4  =  meu_aloca_next(30);
+  //a5  =  meu_aloca_next(15);
+  //a6  =  meu_aloca_next(40);
+  //a7  =  meu_aloca_next(60);
+  //a8  =  meu_aloca_next(80);
+  //a9  =  meu_aloca_next(100);
   printf("** Primeira Alocação **\n");
   mostra_mem();
-  meu_desaloca( a2 );
+  /*meu_desaloca( a2 );
   meu_desaloca( a4 );
   meu_desaloca( a5 );
   meu_desaloca( a7 );
   meu_desaloca( a9 );
   printf("** Segunda Alocação **\n");
   mostra_mem();
-  a10 =  meu_aloca_best(3);
+  a10 =  meu_aloca_next(3);
   printf("** Terceira Alocação **\n");
   mostra_mem();
-  a11 =  meu_aloca_best(20);
+  a11 =  meu_aloca_next(20);
   printf("** Quarta Alocação **\n");
   mostra_mem();
-  a12 =  meu_aloca_best(12);
+  a12 =  meu_aloca_next(12);
   printf("** Quinta Alocação **\n");
   mostra_mem();
-  a13 =  meu_aloca_best(40);
+  a13 =  meu_aloca_next(40);
   printf("** Sextou Alocação **\n");
-  mostra_mem();
+  mostra_mem();*/
 }
+
+
 
 
 void mostra_mem(){
@@ -72,6 +75,7 @@ void inicializa_mem(int mem)
 	header -> tam = mem - sizeof(struct hole);    //O tamanho restante � 1024 menos o tamanho j� utilizado por hole
 	header -> ante = NULL; //Anterior n�o aponta para nada ainda
 	header -> prox = NULL; //Proximo n�o aponta para nada ainda
+  posicaoNext = header;
 	//printf("endere�o que header recebeu: %d / tamanho que header.tam guarda: %d / tamanho de um hole: %d",
 	// header, (header -> tam), sizeof(struct hole));
 	//printf("%d \n", header);
@@ -86,7 +90,6 @@ void *meu_aloca(int size)
 	atual = header;
 	while(atual != NULL)
 	{
-    //printf("%d\n", atual->tam );
 		if(atual -> tam > size + sizeof(struct hole))
     {
 			aux = atual;
@@ -98,7 +101,6 @@ void *meu_aloca(int size)
 			atual -> prox = anterior -> prox;
 			anterior -> prox = atual;
 			atual -> tam = (-1)*size;
-      //printf("*****%d\n", atual->tam);
 			if(atual -> prox != NULL)
 			{
 				atual -> prox -> ante = atual;
@@ -177,32 +179,28 @@ void * meu_aloca_worst(int size)
 
 void * meu_aloca_best(int size)
 {
-  void *aux;
-	struct hole *atual, *anterior, *menor;
-	atual = menor = header;
+	void *aux;
+	struct hole *atual, *anterior;
+	atual = header;
 	while(atual != NULL)
 	{
-		if(atual -> tam < menor -> tam && atual -> tam > size + sizeof(struct hole) && atual -> tam > 0)
+		if(atual -> tam > size + sizeof(struct hole))
     {
-      menor = atual;
+			aux = atual;
+			aux = aux + atual -> tam - size;
+      atual -> tam -= size + sizeof(struct hole);
+      anterior = atual;
+			atual = aux;
+			atual -> ante = anterior;
+			atual -> prox = anterior -> prox;
+			anterior -> prox = atual;
+			atual -> tam = (-1)*size;
+			if(atual -> prox != NULL)
+			{
+				atual -> prox -> ante = atual;
+			}
+			return (aux + sizeof(struct hole));
 		}
 		atual = atual -> prox;
 	}
-  if(menor -> tam > size + sizeof(struct hole))
-  {
-    aux = menor;
-    aux = aux + menor -> tam - size;
-    menor -> tam -= size + sizeof(struct hole);
-    anterior = menor;
-    menor = aux;
-    menor -> ante = anterior;
-    menor -> prox = anterior -> prox;
-    anterior -> prox = menor;
-    menor -> tam = (-1)*size;
-    if(menor -> prox != NULL)
-    {
-      menor -> prox -> ante = menor;
-    }
-    return (aux + sizeof(struct hole));
-  }
 }
