@@ -24,9 +24,9 @@ int main()
 	inicializa_mem(minha_memoria);
   next = header;
   a1  =  meu_aloca_next(10);
-  printf("\nNext: %d\n", next);
+  //printf("\nNext: %d\n", next);
   next = next -> prox;
-  printf("\nNext: %d\n", next);
+  //printf("\nNext: %d\n", next);
   a2  =  meu_aloca_next(5);
   a3  =  meu_aloca_next(20);
   a4  =  meu_aloca_next(30);
@@ -44,6 +44,7 @@ int main()
   meu_desaloca( a9 );
   printf("** Segunda Alocação **\n");
   mostra_mem();
+  printf("\nNext: %d\n", next->tam);
   a10 =  meu_aloca_next(3);
   printf("** Terceira Alocação **\n");
   mostra_mem();
@@ -90,7 +91,7 @@ void *meu_aloca(int size)
 	void *aux;
 	struct hole *atual, *anterior;
 	atual = header;
-  printf("\nHeader: %d\n", header);
+  //printf("\nHeader: %d\n", header);
 	while(atual != NULL)
 	{
     //printf("%d\n", atual->tam );
@@ -98,8 +99,8 @@ void *meu_aloca(int size)
     {
 			aux = atual;
 			aux = aux + atual -> tam - size;
-      printf("\nFim: %d", aux+size);
-      printf("\nEndereco: %d\n", aux);
+      //printf("\nFim: %d", aux+size);
+      //printf("\nEndereco: %d\n", aux);
       atual -> tam -= size + sizeof(struct hole);
       anterior = atual;
 			atual = aux;
@@ -127,6 +128,9 @@ void meu_desaloca(void * ponteiro)
   anterior = atual -> ante;
   proximo  = atual -> prox;
   if(anterior != NULL && anterior -> tam > 0){
+    /*if(next == atual){
+      next = anterior;
+    }*/
     anterior -> prox = proximo;
     anterior -> tam += atual -> tam + sizeof(struct hole);
     atual -> ante = NULL;
@@ -139,6 +143,9 @@ void meu_desaloca(void * ponteiro)
   {
     if(proximo != NULL && proximo -> tam > 0)
     {
+      /*if(next == proximo){
+        next = atual;
+      }*/
       atual -> prox = proximo -> prox;
       atual -> tam += proximo -> tam + sizeof(struct hole);
       proximo -> ante = NULL;
@@ -221,7 +228,7 @@ void *meu_aloca_next(int size)
   void *aux;
 	struct hole *atual, *anterior, *fim;
 	atual = fim = next;
-  printf("\nHeader: %d\n", header);
+  //printf("\nHeader: %d\n", header);
 	while(atual != NULL)
 	{
     //printf("%d\n", atual->tam );
@@ -229,8 +236,8 @@ void *meu_aloca_next(int size)
     {
       aux = atual;
 			aux = aux + atual -> tam - size;
-      printf("\nFim: %d", aux+size);
-      printf("\nEndereco: %d\n", aux);
+      //printf("\nFim: %d", aux+size);
+      //printf("\nEndereco: %d\n", aux);
       atual -> tam -= size + sizeof(struct hole);
       anterior = atual;
 			atual = aux;
@@ -244,7 +251,7 @@ void *meu_aloca_next(int size)
 				atual -> prox -> ante = atual;
 			}
       next = atual;
-      printf("\nAtual: %d\n", atual);
+      //printf("\nAtual: %d\n", atual);
       return (aux + sizeof(struct hole));
 		}
 		atual = atual -> prox;
@@ -257,8 +264,8 @@ void *meu_aloca_next(int size)
     {
       aux = atual;
 			aux = aux + atual -> tam - size;
-      printf("\nFim: %d", aux+size);
-      printf("\nEndereco: %d\n", aux);
+      //printf("\nFim: %d", aux+size);
+      //printf("\nEndereco: %d\n", aux);
       atual -> tam -= size + sizeof(struct hole);
       anterior = atual;
 			atual = aux;
@@ -272,7 +279,7 @@ void *meu_aloca_next(int size)
 				atual -> prox -> ante = atual;
 			}
       next = atual;
-      printf("\nAtual: %d\n", atual);
+      //printf("\nAtual: %d\n", atual);
       return (aux + sizeof(struct hole));
 		}
 		atual = atual -> prox;
